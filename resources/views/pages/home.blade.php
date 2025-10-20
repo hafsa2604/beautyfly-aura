@@ -13,7 +13,6 @@
     </section>
 
 
-
     <!-- About Section -->
     <section class="container py-5 text-center">
         <h2 class="fw-semibold mb-3 text-primary">About BeautyFly Aura</h2>
