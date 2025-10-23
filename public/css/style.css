@@ -1,8 +1,7 @@
-
 body { font-family: Arial, sans-serif; }
 .card img { object-fit: cover; height: 220px; }
 @media (max-width: 576px) {
-  .card img { height: 180px; }
+    .card img { height: 180px; }
 }
 
 /* 🌸 Hero Section Style */
