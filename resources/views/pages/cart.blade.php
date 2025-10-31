@@ -37,20 +37,12 @@
                             $grand += $total;
                         @endphp
                         <tr class="text-center">
-                            <td class="fw-semibold">{{ $item['product']['title'] }}</td>
+                            <td>{{ $item['product']['title'] }}</td>
+                            <td><img src="{{ asset('images/' . $item['product']['image']) }}" width="70" height="70" style="object-fit: cover; border-radius: 10px;"></td>
                             <td>
-                                <img src="{{ asset('images/' . $item['product']['image']) }}"
-                                     alt="{{ $item['product']['title'] }}"
-                                     style="width: 70px; height: 70px; object-fit: cover; border-radius: 10px;">
-                            </td>
-                            <td>
-                                <form action="{{ route('cart.update', $id) }}" method="POST" class="d-flex justify-content-center align-items-center gap-2">
+                                <form action="{{ route('cart.update', $id) }}" method="POST" class="d-flex justify-content-center gap-2">
                                     @csrf
-                                    <input type="number" name="quantity"
-                                           value="{{ $item['quantity'] }}"
-                                           min="1"
-                                           class="form-control text-center"
-                                           style="width: 70px;">
+                                    <input type="number" name="quantity" value="{{ $item['quantity'] }}" min="1" class="form-control text-center" style="width: 70px;">
                                     <button class="btn btn-sm btn-outline-secondary">Update</button>
                                 </form>
                             </td>
@@ -77,10 +69,8 @@
             </div>
 
             <div class="text-center mt-4">
-                <a href="{{ route('products') }}" class="btn btn-outline-primary me-2">
-                    ← Continue Shopping
-                </a>
-                <a href="#" class="btn btn-success">Proceed to Checkout</a>
+                <a href="{{ route('products') }}" class="btn btn-outline-primary me-2">← Continue Shopping</a>
+                <a href="{{ route('checkout.index') }}" class="btn btn-primary">Proceed to Checkout</a>
             </div>
         @endif
     </div>
