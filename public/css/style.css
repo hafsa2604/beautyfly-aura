@@ -128,3 +128,14 @@ h1, h2, h3 {
     background-color: #d66de0;
     transform: scale(1.05);
 }
+
+.checkout-title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700; /* bold like your product title */
+    color: #4B0082; /* rich purple tone similar to your site */
+    font-size: 2rem;
+    letter-spacing: 0.5px;
+}
+
+
+

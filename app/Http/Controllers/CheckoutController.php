@@ -11,7 +11,7 @@ class CheckoutController extends Controller
      */
     public function index()
     {
-        return view('checkout'); // ✅ Loads resources/views/checkout.blade.php
+        return view('pages.checkout'); // ✅ Loads resources/views/checkout.blade.php
     }
 
     /**
