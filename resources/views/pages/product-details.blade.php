@@ -5,9 +5,10 @@
         <div class="row align-items-center">
             <!-- Product Image -->
             <div class="col-md-6 text-center mb-4 mb-md-0">
-                <img src="{{ asset('images/' . $product->image) }}"
+                <img src="{{ $product->image ? asset('images/' . $product->image) : asset('images/placeholder.jpg') }}"
                      alt="{{ $product->title }}"
                      class="img-fluid rounded shadow-lg"
+                     onerror="this.src='{{ asset('images/placeholder.jpg') }}'; this.onerror=null;"
                      style="max-height: 400px; object-fit: cover;">
             </div>
 

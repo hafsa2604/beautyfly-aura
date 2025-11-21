@@ -12,7 +12,10 @@ class ProductController extends Controller
     // List all products
     public function index()
     {
-        $products = Product::orderBy('created_at','desc')->paginate(10);
+        $products = Product::select('products.*')
+            ->distinct()
+            ->orderBy('created_at','desc')
+            ->paginate(10);
         return view('admin.products.index', compact('products'));
     }
 
@@ -73,9 +76,15 @@ class ProductController extends Controller
         $data['slug'] = Str::slug($request->title);
 
         if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if($product->image && file_exists(public_path('images/'.$product->image))){
-                unlink(public_path('images/'.$product->image));
+            // Check if any other products are using the old image before deleting it
+            $oldImage = $product->image;
+            $otherProductsUsingImage = Product::where('image', $oldImage)
+                ->where('id', '!=', $product->id)
+                ->count();
+
+            // Only delete the old image file if no other products are using it
+            if($oldImage && $otherProductsUsingImage == 0 && file_exists(public_path('images/'.$oldImage))){
+                unlink(public_path('images/'.$oldImage));
             }
             
             $file = $request->file('image');
@@ -92,8 +101,15 @@ class ProductController extends Controller
     // Delete product
     public function destroy(Product $product)
     {
-        if($product->image && file_exists(public_path('images/'.$product->image))){
-            unlink(public_path('images/'.$product->image));
+        // Check if any other products are using the same image before deleting it
+        $imageToDelete = $product->image;
+        $otherProductsUsingImage = Product::where('image', $imageToDelete)
+            ->where('id', '!=', $product->id)
+            ->count();
+
+        // Only delete the image file if no other products are using it
+        if($imageToDelete && $otherProductsUsingImage == 0 && file_exists(public_path('images/'.$imageToDelete))){
+            unlink(public_path('images/'.$imageToDelete));
         }
 
         $product->delete();

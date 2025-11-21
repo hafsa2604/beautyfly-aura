@@ -24,9 +24,10 @@
             @forelse($bestSellers as $product)
                 <div class="col-md-3 mb-4">
                     <div class="card shadow-sm border-0 h-100" style="border-radius: 20px;">
-                        <img src="{{ asset('images/'.$product->image) }}" 
+                        <img src="{{ $product->image ? asset('images/'.$product->image) : asset('images/placeholder.jpg') }}" 
                              class="card-img-top" 
                              alt="{{ $product->title }}" 
+                             onerror="this.src='{{ asset('images/placeholder.jpg') }}'; this.onerror=null;"
                              style="border-top-left-radius: 20px; border-top-right-radius: 20px; height: 250px; object-fit: cover;">
                         <div class="card-body">
                             <h5 class="card-title fw-semibold" style="color: #4B0082;">{{ $product->title }}</h5>

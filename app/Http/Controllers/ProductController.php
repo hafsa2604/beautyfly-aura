@@ -45,7 +45,10 @@ class ProductController extends Controller
                 $products->orderBy('created_at', 'desc');
         }
 
-        $products = $products->paginate(12)->withQueryString();
+        $products = $products->select('products.*')
+            ->distinct()
+            ->paginate(12)
+            ->withQueryString();
 
         // Pass all variables to the view
         return view('pages.products', compact('products', 'selectedType', 'searchTerm', 'selectedSort'));

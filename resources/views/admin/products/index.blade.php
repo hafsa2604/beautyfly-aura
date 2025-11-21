@@ -37,9 +37,10 @@
                         <tr>
                             <td>{{ $product->id }}</td>
                             <td>
-                                @if($product->image)
+                                @if($product->image && file_exists(public_path('images/'.$product->image)))
                                     <img src="{{ asset('images/'.$product->image) }}" 
                                          alt="{{ $product->title }}" 
+                                         onerror="this.parentElement.innerHTML='<span class=\'text-muted\'>No image</span>';"
                                          style="height:50px; width:50px; object-fit:cover; border-radius:4px;">
                                 @else
                                     <span class="text-muted">No image</span>

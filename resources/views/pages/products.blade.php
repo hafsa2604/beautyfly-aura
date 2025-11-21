@@ -45,9 +45,10 @@
                 <div class="col-md-4 col-lg-3 mb-4">
                     <div class="card shadow-sm h-100">
 
-                        <img src="{{ asset('images/'.$product->image) }}"
+                        <img src="{{ $product->image ? asset('images/'.$product->image) : asset('images/placeholder.jpg') }}"
                              class="card-img-top"
                              alt="{{ $product->title }}"
+                             onerror="this.src='{{ asset('images/placeholder.jpg') }}'; this.onerror=null;"
                              style="height: 220px; object-fit: cover;">
 
                         <div class="card-body">

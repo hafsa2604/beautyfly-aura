@@ -38,7 +38,13 @@
                         @endphp
                         <tr class="text-center">
                             <td>{{ $item['product']['title'] }}</td>
-                            <td><img src="{{ asset('images/' . $item['product']['image']) }}" width="70" height="70" style="object-fit: cover; border-radius: 10px;"></td>
+                            <td>
+                                <img src="{{ !empty($item['product']['image']) ? asset('images/' . $item['product']['image']) : asset('images/placeholder.jpg') }}" 
+                                     width="70" 
+                                     height="70" 
+                                     onerror="this.src='{{ asset('images/placeholder.jpg') }}'; this.onerror=null;"
+                                     style="object-fit: cover; border-radius: 10px;">
+                            </td>
                             <td>
                                 <form action="{{ route('cart.update', $id) }}" method="POST" class="d-flex justify-content-center gap-2">
                                     @csrf

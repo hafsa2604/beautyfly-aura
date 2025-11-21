@@ -1,7 +1,11 @@
 
 <div class="col-md-4 mb-4">
   <div class="card h-100">
-    <img src="{{ asset('images/' . ($product['image'] ?? 'placeholder.jpg')) }}" class="card-img-top" alt="{{ $product['title'] }}" style="height:220px;object-fit:cover;">
+    <img src="{{ !empty($product['image']) ? asset('images/' . $product['image']) : asset('images/placeholder.jpg') }}" 
+         class="card-img-top" 
+         alt="{{ $product['title'] }}" 
+         onerror="this.src='{{ asset('images/placeholder.jpg') }}'; this.onerror=null;"
+         style="height:220px;object-fit:cover;">
     <div class="card-body d-flex flex-column">
       <h5 class="card-title">{{ $product['title'] }}</h5>
       <p class="card-text">{{ $product['short'] ?? '' }}</p>

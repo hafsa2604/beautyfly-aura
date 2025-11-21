@@ -14,7 +14,15 @@
             <p><strong>Usage:</strong> {{ $product->usage }}</p>
 
             <p><strong>Image:</strong></p>
-            <img src="{{ asset('images/' . $product->image) }}" alt="" style="max-width:200px;" class="rounded shadow">
+            @if($product->image && file_exists(public_path('images/'.$product->image)))
+                <img src="{{ asset('images/' . $product->image) }}" 
+                     alt="{{ $product->title }}" 
+                     onerror="this.src='{{ asset('images/placeholder.jpg') }}'; this.onerror=null;"
+                     style="max-width:200px;" 
+                     class="rounded shadow">
+            @else
+                <p class="text-muted">No image available</p>
+            @endif
 
             <div class="mt-4">
                 <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">Back</a>

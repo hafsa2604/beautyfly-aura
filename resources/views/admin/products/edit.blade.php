@@ -61,12 +61,17 @@
 
                         <div class="mb-3">
                             <label for="image" class="form-label">Product Image</label>
-                            @if($product->image)
+                            @if($product->image && file_exists(public_path('images/'.$product->image)))
                                 <div class="mb-2">
                                     <img src="{{ asset('images/'.$product->image) }}" 
                                          alt="{{ $product->title }}" 
+                                         onerror="this.parentElement.innerHTML='<p class=\'text-muted small\'>Image not found</p>';"
                                          style="max-height:150px; border-radius:4px; border:1px solid #ddd;">
                                     <p class="text-muted small mt-1">Current image</p>
+                                </div>
+                            @elseif($product->image)
+                                <div class="mb-2">
+                                    <p class="text-warning small">Image file not found: {{ $product->image }}</p>
                                 </div>
                             @endif
                             <input type="file" 
