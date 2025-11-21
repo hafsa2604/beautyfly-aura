@@ -5,28 +5,55 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\ProfileController;
 
-// 🏠 Home
+// ----------------------
+// Frontend Routes
+// ----------------------
 Route::get('/', [PageController::class, 'home'])->name('home');
 
-// 🧴 Products
 Route::get('/products', [ProductController::class, 'index'])->name('products');
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
 Route::post('/product/{id}/review', [ProductController::class, 'addReview'])->name('product.review');
 
-// 🛒 Cart
 Route::get('/cart', [CartController::class, 'view'])->name('cart.view');
 Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
 Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
 Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 
-// 🌸 Know Your Skin Type
 Route::view('/skin-type', 'pages.skin-type')->name('skin-type');
 
-// 📞 Contact
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::post('/contact', [PageController::class, 'sendContact'])->name('contact.send');
 
-// 💳 Checkout
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
 Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+
+// ----------------------
+// Auth / Profile Routes (Breeze)
+// ----------------------
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
+
+// ----------------------
+// Admin Routes
+// ----------------------
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('products', AdminProductController::class);
+});
+
+
+
+Route::get('/admin-test', function () {
+    return 'Admin middleware works!';
+})->middleware(['auth', 'admin']);

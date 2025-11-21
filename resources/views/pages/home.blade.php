@@ -21,27 +21,32 @@
         <h2 class="fw-bold mb-4" style="color: #4B0082;">💜 Our Best Sellers 💜</h2>
 
         <div class="row justify-content-center">
-            @php
-                $products = [
-                    ['id' => 1, 'img' => 'serum.jpg', 'name' => 'Hydrating Serum', 'desc' => 'Deep hydration with hyaluronic acid for glowing, plump skin.'],
-                    ['id' => 6, 'img' => 'toner.jpg', 'name' => 'Oil Control Toner', 'desc' => 'Balances sebum and minimizes pores for a matte, fresh look.'],
-                    ['id' => 3, 'img' => 'moisturecream.jpg', 'name' => 'Moisture Repair Cream', 'desc' => 'Rich cream that deeply nourishes and restores dry skin.'],
-                    ['id' => 15, 'img' => 'multivitamin.jpg', 'name' => 'Multi-Vitamin Serum', 'desc' => 'Boosts radiance with a blend of vitamins B, C, and E.'],
-                ];
-            @endphp
-
-            @foreach ($products as $product)
+            @forelse($bestSellers as $product)
                 <div class="col-md-3 mb-4">
                     <div class="card shadow-sm border-0 h-100" style="border-radius: 20px;">
-                        <img src="{{ asset('images/' . $product['img']) }}" class="card-img-top" alt="{{ $product['name'] }}" style="border-top-left-radius: 20px; border-top-right-radius: 20px;">
+                        <img src="{{ asset('images/'.$product->image) }}" 
+                             class="card-img-top" 
+                             alt="{{ $product->title }}" 
+                             style="border-top-left-radius: 20px; border-top-right-radius: 20px; height: 250px; object-fit: cover;">
                         <div class="card-body">
-                            <h5 class="card-title fw-semibold" style="color: #4B0082;">{{ $product['name'] }}</h5>
-                            <p class="card-text" style="color: #3b1c47;">{{ $product['desc'] }}</p>
-                            <a href="{{ route('product.show', $product['id']) }}" class="btn btn-outline-primary" style="color: #7a1fa2; border-color: #7a1fa2;">View Product</a>
+                            <h5 class="card-title fw-semibold" style="color: #4B0082;">{{ $product->title }}</h5>
+                            <p class="card-text" style="color: #3b1c47;">
+                                {{ Str::limit($product->desc, 80) }}
+                            </p>
+                            <p class="fw-bold text-success mb-2">PKR {{ number_format($product->price) }}</p>
+                            <a href="{{ route('product.show', $product->id) }}" 
+                               class="btn btn-outline-primary" 
+                               style="color: #7a1fa2; border-color: #7a1fa2;">
+                                View Product
+                            </a>
                         </div>
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <div class="col-12">
+                    <p class="text-muted">No products available yet. Check back soon!</p>
+                </div>
+            @endforelse
         </div>
     </section>
 
@@ -69,3 +74,4 @@
         </div>
     </section>
 @endsection
+

@@ -1,13 +1,15 @@
 <?php
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
+use App\Models\Product;
 
 class PageController extends Controller
 {
     public function home()
     {
-        // Example featured products will be provided by ProductController normally.
-        return view('pages.home');
+        // Get latest 4 products for best sellers section
+        $bestSellers = Product::orderBy('created_at', 'desc')->take(4)->get();
+        return view('pages.home', compact('bestSellers'));
     }
 
     public function contact()
