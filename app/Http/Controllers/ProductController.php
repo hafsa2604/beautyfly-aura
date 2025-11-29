@@ -4,22 +4,25 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Category;
 
 class ProductController extends Controller
 {
     // Products listing page
     public function index(Request $request)
     {
-        $products = Product::query();
+        $products = Product::with('category');
 
         // Get query parameters with defaults
         $selectedType = $request->query('type') ?? 'all';
         $searchTerm   = $request->query('search') ?? '';
         $selectedSort = $request->query('sort') ?? '';
 
-        // Filter by skin type
+        // Filter by skin type (category)
         if ($selectedType !== 'all') {
-            $products->where('type', $selectedType);
+            $products->whereHas('category', function ($q) use ($selectedType) {
+                $q->where('slug', $selectedType);
+            });
         }
 
         // Search by title or description
@@ -50,33 +53,41 @@ class ProductController extends Controller
             ->paginate(12)
             ->withQueryString();
 
+        // Get categories for filter dropdown
+        $categories = Category::all();
+
         // Pass all variables to the view
-        return view('pages.products', compact('products', 'selectedType', 'searchTerm', 'selectedSort'));
+        return view('pages.products', compact('products', 'selectedType', 'searchTerm', 'selectedSort', 'categories'));
     }
 
     // Single product details
     public function show($id)
     {
-        $product = Product::findOrFail($id);
-
-        // Example static reviews
-        $reviews = [
-            (object)['name' => 'Sara', 'review' => 'Amazing product, my skin feels soft!'],
-            (object)['name' => 'Ali', 'review' => 'Helped reduce oil and acne. Highly recommended!'],
-        ];
+        $product = Product::with(['category', 'reviews.user'])->findOrFail($id);
+        $reviews = $product->reviews()->orderBy('created_at', 'desc')->get();
 
         return view('pages.product-details', compact('product', 'reviews'));
     }
 
-    // Add a review (dummy for now)
+    // Add a review
     public function addReview(Request $request, $id)
     {
         $request->validate([
             'name'   => 'required|string|max:50',
             'review' => 'required|string|max:500',
+            'rating' => 'nullable|integer|min:1|max:5',
         ]);
 
-        // For now we are not saving reviews in the database
+        $product = Product::findOrFail($id);
+
+        \App\Models\Review::create([
+            'product_id' => $product->id,
+            'user_id' => auth()->id(),
+            'name' => $request->name,
+            'review' => $request->review,
+            'rating' => $request->rating ?? 5,
+        ]);
+
         return redirect()->route('product.show', $id)
             ->with('success', 'Thank you for your review!');
     }

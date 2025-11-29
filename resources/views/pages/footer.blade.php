@@ -1,46 +1,114 @@
-<footer style="background: linear-gradient(135deg, #2a1036, #4B0082); color: #f5e9ff; padding: 60px 0 0;">
+<footer class="main-footer">
     <div class="container">
         <div class="row gy-4">
-            <div class="col-md-4">
-                <h4 class="fw-bold text-white mb-3">BeautyFly Aura</h4>
-                <p>Your glow, our passion 💫 — skincare crafted with love and science.</p>
-                <div class="mt-3">
-                    <a href="#" class="text-light me-3"><i class="bi bi-facebook fs-5"></i></a>
-                    <a href="#" class="text-light me-3"><i class="bi bi-instagram fs-5"></i></a>
-                    <a href="#" class="text-light"><i class="bi bi-youtube fs-5"></i></a>
+            <div class="col-lg-4 col-md-6">
+                <div class="footer-brand">
+                    <h4 class="fw-bold text-white mb-3">
+                        <span class="brand-text-footer">BeautyFly <span class="brand-accent-footer">Aura</span></span>
+                    </h4>
+                    <p class="footer-tagline">Your glow, our passion 💫 — skincare crafted with love and science.</p>
+                    <div class="social-links-footer mt-4">
+                        <a href="#" class="social-icon" title="Facebook">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        <a href="#" class="social-icon" title="Instagram">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                        <a href="#" class="social-icon" title="YouTube">
+                            <i class="bi bi-youtube"></i>
+                        </a>
+                        <a href="#" class="social-icon" title="Twitter">
+                            <i class="bi bi-twitter"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
 
-            <div class="col-md-2">
-                <h6 class="fw-semibold text-white mb-3">Quick Links</h6>
-                <ul class="list-unstyled small">
-                    <li><a href="{{ route('home') }}" class="text-light text-decoration-none d-block mb-2">Home</a></li>
-                    <li><a href="{{ route('products') }}" class="text-light text-decoration-none d-block mb-2">Products</a></li>
-                    <li><a href="{{ route('skin-type') }}" class="text-light text-decoration-none d-block mb-2">Skin Type Test</a></li>
-                    <li><a href="{{ route('contact') }}" class="text-light text-decoration-none d-block mb-2">Contact</a></li>
+            <div class="col-lg-2 col-md-6">
+                <h6 class="footer-heading">Quick Links</h6>
+                <ul class="footer-links">
+                    <li><a href="{{ route('home') }}"><i class="bi bi-chevron-right me-1"></i>Home</a></li>
+                    <li><a href="{{ route('products') }}"><i class="bi bi-chevron-right me-1"></i>Products</a></li>
+                    <li><a href="{{ route('skin-type') }}"><i class="bi bi-chevron-right me-1"></i>Skin Type Test</a></li>
+                    <li><a href="{{ route('contact') }}"><i class="bi bi-chevron-right me-1"></i>Contact</a></li>
                 </ul>
             </div>
 
-            <div class="col-md-3">
-                <h6 class="fw-semibold text-white mb-3">Get in Touch</h6>
-                <p class="small"><i class="bi bi-geo-alt-fill"></i> Karachi, Pakistan</p>
-                <p class="small"><i class="bi bi-envelope"></i> info@beautyflyaura.com</p>
-                <p class="small"><i class="bi bi-telephone"></i> +92 300 1234567</p>
+            <div class="col-lg-3 col-md-6">
+                <h6 class="footer-heading">Get in Touch</h6>
+                <ul class="footer-contact">
+                    <li>
+                        <i class="bi bi-geo-alt-fill"></i>
+                        <span>Karachi, Pakistan</span>
+                    </li>
+                    <li>
+                        <i class="bi bi-envelope"></i>
+                        <a href="mailto:info@beautyflyaura.com">info@beautyflyaura.com</a>
+                    </li>
+                    <li>
+                        <i class="bi bi-telephone"></i>
+                        <a href="tel:+923001234567">+92 300 1234567</a>
+                    </li>
+                    <li>
+                        <i class="bi bi-clock"></i>
+                        <span>Mon - Sat: 9AM - 6PM</span>
+                    </li>
+                </ul>
             </div>
 
-            <div class="col-md-3">
-                <h6 class="fw-semibold text-white mb-3">We Accept</h6>
-                <div class="d-flex gap-2 flex-wrap">
-                    <img src="{{ asset('images/visa.png') }}" alt="Visa" style="height:28px;">
-                    <img src="{{ asset('images/mastercard.png') }}" alt="Mastercard" style="height:28px;">
-                    <img src="{{ asset('images/paypal.png') }}" alt="PayPal" style="height:28px;">
+            <div class="col-lg-3 col-md-6">
+                <h6 class="footer-heading">Newsletter</h6>
+                <p class="footer-text">Subscribe to get special offers and skincare tips!</p>
+                <form class="newsletter-form" action="{{ route('newsletter.subscribe') }}" method="POST">
+                    @csrf
+                    <div class="input-group mb-3">
+                        <input type="email" name="email" class="form-control" placeholder="Your email" required>
+                        <button class="btn btn-newsletter" type="submit">
+                            <i class="bi bi-send"></i>
+                        </button>
+                    </div>
+                    @if(session('success'))
+                        <div class="alert alert-success alert-dismissible fade show mt-2" role="alert" style="font-size: 0.85rem; padding: 0.5rem;">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" style="font-size: 0.7rem;"></button>
+                        </div>
+                    @endif
+                    @if(session('info'))
+                        <div class="alert alert-info alert-dismissible fade show mt-2" role="alert" style="font-size: 0.85rem; padding: 0.5rem;">
+                            {{ session('info') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" style="font-size: 0.7rem;"></button>
+                        </div>
+                    @endif
+                    @error('email')
+                        <div class="text-danger small mt-1">{{ $message }}</div>
+                    @enderror
+                </form>
+                <div class="payment-methods mt-4">
+                    <h6 class="footer-heading mb-2">We Accept</h6>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <div class="payment-icon">
+                            <i class="bi bi-credit-card"></i>
+                        </div>
+                        <div class="payment-icon">
+                            <i class="bi bi-paypal"></i>
+                        </div>
+                    </div>
+                    <p class="small mt-2"><i class="bi bi-shield-check me-1"></i>Secure transactions</p>
                 </div>
-                <p class="small mt-3">Secure transactions 🔒</p>
             </div>
         </div>
 
-        <div class="text-center mt-5 py-3" style="background: rgba(255,255,255,0.1); border-top: 1px solid rgba(255,255,255,0.2); font-size: 0.9rem;">
-            © {{ date('Y') }} <strong>BeautyFly Aura</strong> — All Rights Reserved 💜
+        <div class="footer-bottom">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0">© {{ date('Y') }} <strong>BeautyFly Aura</strong> — All Rights Reserved 💜</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="#" class="footer-link me-3">Privacy Policy</a>
+                    <a href="#" class="footer-link me-3">Terms of Service</a>
+                    <a href="#" class="footer-link">Refund Policy</a>
+                </div>
+            </div>
         </div>
     </div>
 </footer>

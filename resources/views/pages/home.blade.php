@@ -2,23 +2,35 @@
 
 @section('content')
     <!-- 🌸 Hero Section -->
-    <section class="text-center py-5" style="background: linear-gradient(135deg, #e3c9ff, #f8d4ff); border-radius: 20px;">
-        <div class="container">
-            <h1 class="fw-bold display-5" style="color: #4B0082;">Welcome to <span style="color:#7a1fa2;">BeautyFly Aura</span> 🌸</h1>
-            <p class="lead mt-3" style="color:#3b1c47; max-width: 600px; margin: 0 auto;">
+    <section class="hero-section-enhanced text-center">
+        <div class="container position-relative">
+            <h1 class="fw-bold display-4 mb-4" style="color: #4B0082;">
+                Welcome to <span style="color:#7a1fa2;">BeautyFly Aura</span> 
+                <span style="font-size: 2.5rem;">🌸</span>
+            </h1>
+            <p class="lead mt-3 mb-4" style="color:#3b1c47; max-width: 650px; margin: 0 auto; font-size: 1.25rem;">
                 Discover premium skincare products designed to bring out your natural glow.
                 BeautyFly Aura — where elegance meets self-care.
             </p>
-            <div class="mt-4 d-flex justify-content-center gap-3">
-                <a href="{{ route('products') }}" class="btn btn-lg" style="background-color: #7a1fa2; color: white; border-radius: 30px; padding: 10px 30px;">Shop Now</a>
-                <a href="{{ route('skin-type') }}" class="btn btn-lg btn-outline-light" style="color:#7a1fa2; border-color:#7a1fa2; border-radius:30px; padding:10px 30px;">Know Your Skin Type</a>
+            <div class="mt-5 d-flex justify-content-center gap-3 flex-wrap">
+                <a href="{{ route('products') }}" class="btn btn-primary btn-lg">
+                    <i class="bi bi-bag me-2"></i>Shop Now
+                </a>
+                <a href="{{ route('skin-type') }}" class="btn btn-outline-primary btn-lg">
+                    <i class="bi bi-heart-pulse me-2"></i>Know Your Skin Type
+                </a>
             </div>
         </div>
     </section>
 
     <!-- 💜 Best Sellers -->
     <section class="mt-5 text-center">
-        <h2 class="fw-bold mb-4" style="color: #4B0082;">💜 Our Best Sellers 💜</h2>
+        <div class="mb-5">
+            <h2 class="fw-bold mb-3" style="color: #4B0082;">
+                <i class="bi bi-star-fill me-2" style="color: #f7b9f4;"></i>Our Best Sellers
+            </h2>
+            <p class="text-muted">Handpicked favorites loved by our customers</p>
+        </div>
 
         <div class="row justify-content-center">
             @forelse($bestSellers as $product)
@@ -52,24 +64,39 @@
     </section>
 
     <!-- 💎 Why Choose Us -->
-    <section class="py-5 mt-5" style="background: #f8e6ff; border-radius: 20px;">
+    <section class="py-5 mt-5">
         <div class="container text-center">
-            <h2 class="fw-bold mb-4" style="color:#4B0082;">💎 Why Choose BeautyFly Aura?</h2>
-            <div class="row justify-content-center">
-                <div class="col-md-3">
-                    <i class="bi bi-stars fs-2 text-purple"></i>
-                    <h5 class="mt-3 text-purple">Premium Quality</h5>
-                    <p>Carefully formulated with safe and natural ingredients.</p>
+            <h2 class="fw-bold mb-5" style="color:#4B0082;">
+                <i class="bi bi-gem me-2"></i>Why Choose BeautyFly Aura?
+            </h2>
+            <div class="row justify-content-center g-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card">
+                        <i class="bi bi-stars"></i>
+                        <h5 class="mt-3" style="color:#4B0082;">Premium Quality</h5>
+                        <p class="text-muted">Carefully formulated with safe and natural ingredients.</p>
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <i class="bi bi-heart fs-2 text-purple"></i>
-                    <h5 class="mt-3 text-purple">Cruelty-Free</h5>
-                    <p>Ethically crafted — no animal testing, ever.</p>
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card">
+                        <i class="bi bi-heart"></i>
+                        <h5 class="mt-3" style="color:#4B0082;">Cruelty-Free</h5>
+                        <p class="text-muted">Ethically crafted — no animal testing, ever.</p>
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <i class="bi bi-truck fs-2 text-purple"></i>
-                    <h5 class="mt-3 text-purple">Fast Delivery</h5>
-                    <p>Your favorite skincare delivered to your doorstep.</p>
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card">
+                        <i class="bi bi-truck"></i>
+                        <h5 class="mt-3" style="color:#4B0082;">Fast Delivery</h5>
+                        <p class="text-muted">Your favorite skincare delivered to your doorstep.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card">
+                        <i class="bi bi-shield-check"></i>
+                        <h5 class="mt-3" style="color:#4B0082;">Dermatologist Tested</h5>
+                        <p class="text-muted">All products tested and approved by skincare experts.</p>
+                    </div>
                 </div>
             </div>
         </div>

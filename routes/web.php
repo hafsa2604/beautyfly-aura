@@ -6,6 +6,11 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ReviewController;
+use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\ProfileController;
 
 // ----------------------
@@ -26,9 +31,11 @@ Route::view('/skin-type', 'pages.skin-type')->name('skin-type');
 
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::post('/contact', [PageController::class, 'sendContact'])->name('contact.send');
+Route::post('/newsletter/subscribe', [PageController::class, 'subscribeNewsletter'])->name('newsletter.subscribe');
 
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
 Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+Route::get('/checkout/thankyou/{order}', [CheckoutController::class, 'thankyou'])->name('checkout.thankyou');
 
 // ----------------------
 // Auth / Profile Routes (Breeze)
@@ -50,6 +57,11 @@ require __DIR__.'/auth.php';
 // ----------------------
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('products', AdminProductController::class);
+    Route::resource('categories', CategoryController::class);
+    Route::resource('reviews', ReviewController::class)->only(['index', 'show', 'destroy']);
+    Route::resource('orders', OrderController::class)->only(['index', 'show', 'update', 'destroy']);
+    Route::resource('users', UserController::class)->only(['index', 'show', 'edit', 'update', 'destroy']);
+    Route::resource('contacts', ContactController::class)->only(['index', 'show', 'update', 'destroy']);
 });
 
 

@@ -25,7 +25,34 @@ class PageController extends Controller
             'message' => 'required|string'
         ]);
 
-        // For starter version we just redirect back with message
+        \App\Models\Contact::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'message' => $validated['message'],
+            'status' => 'new',
+        ]);
+
         return redirect()->route('contact')->with('success', 'Message sent. Thank you!');
+    }
+
+    public function subscribeNewsletter(Request $request)
+    {
+        $validated = $request->validate([
+            'email' => 'required|email|max:255'
+        ]);
+
+        // Check if email already exists
+        $existing = \App\Models\Newsletter::where('email', $validated['email'])->first();
+
+        if ($existing) {
+            return back()->with('info', 'You are already subscribed to our newsletter!');
+        }
+
+        // Create new subscription
+        \App\Models\Newsletter::create([
+            'email' => $validated['email'],
+        ]);
+
+        return back()->with('success', 'Thank you for subscribing to our newsletter!');
     }
 }

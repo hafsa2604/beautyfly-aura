@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Order;
+use App\Models\OrderItem;
+use Illuminate\Support\Facades\DB;
 
 class CheckoutController extends Controller
 {
@@ -11,7 +14,14 @@ class CheckoutController extends Controller
      */
     public function index()
     {
-        return view('pages.checkout'); // ✅ Loads resources/views/checkout.blade.php
+        $cart = session('cart', []);
+        
+        if (empty($cart)) {
+            return redirect()->route('cart.view')
+                ->with('error', 'Your cart is empty. Please add products before checkout.');
+        }
+
+        return view('pages.checkout', compact('cart'));
     }
 
     /**
@@ -24,12 +34,75 @@ class CheckoutController extends Controller
             'email' => 'required|email',
             'address' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
+            'notes' => 'nullable|string|max:500',
         ]);
 
-        // (Later) Save to DB or send order email, etc.
+        $cart = session('cart', []);
 
-        return redirect()
-            ->route('checkout.index')
-            ->with('success', 'Order placed successfully! Thank you for shopping with us.');
+        if (empty($cart)) {
+            return redirect()->route('cart.view')
+                ->with('error', 'Your cart is empty.');
+        }
+
+        // Calculate subtotal
+        $subtotal = 0;
+        foreach ($cart as $item) {
+            $subtotal += $item['product']->price * $item['quantity'];
+        }
+
+        // Calculate delivery charges (200 PKR if order is below 2000)
+        $deliveryCharges = $subtotal < 2000 ? 200 : 0;
+        $totalAmount = $subtotal + $deliveryCharges;
+
+        DB::beginTransaction();
+        try {
+            // Create order
+            $order = Order::create([
+                'user_id' => auth()->id(),
+                'order_number' => Order::generateOrderNumber(),
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'phone' => $validated['phone'],
+                'address' => $validated['address'],
+                'total_amount' => $subtotal, // Store subtotal
+                'delivery_charges' => $deliveryCharges,
+                'status' => 'pending',
+                'notes' => $validated['notes'] ?? null,
+            ]);
+
+            // Create order items
+            foreach ($cart as $id => $item) {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $item['product']->id,
+                    'quantity' => $item['quantity'],
+                    'price' => $item['product']->price,
+                ]);
+            }
+
+            DB::commit();
+
+            // Clear cart
+            session(['cart' => []]);
+
+            // Redirect to thank you page with order details
+            return redirect()
+                ->route('checkout.thankyou', $order->id)
+                ->with('success', 'Order placed successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()
+                ->route('checkout.index')
+                ->with('error', 'Failed to place order. Please try again.');
+        }
+    }
+
+    /**
+     * Show thank you page after order placement
+     */
+    public function thankyou(Order $order)
+    {
+        $order->load(['items.product']);
+        return view('pages.thankyou', compact('order'));
     }
 }

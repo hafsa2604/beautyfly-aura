@@ -2,73 +2,164 @@
 
 @section('content')
     <div class="container py-5">
-        <div class="row align-items-center">
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('home') }}" style="color: #7a1fa2;">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('products') }}" style="color: #7a1fa2;">Products</a></li>
+                <li class="breadcrumb-item active">{{ $product->title }}</li>
+            </ol>
+        </nav>
+
+        <div class="row align-items-start">
             <!-- Product Image -->
             <div class="col-md-6 text-center mb-4 mb-md-0">
-                <img src="{{ $product->image ? asset('images/' . $product->image) : asset('images/placeholder.jpg') }}"
-                     alt="{{ $product->title }}"
-                     class="img-fluid rounded shadow-lg"
-                     onerror="this.src='{{ asset('images/placeholder.jpg') }}'; this.onerror=null;"
-                     style="max-height: 400px; object-fit: cover;">
+                <div class="product-image-wrapper">
+                    <img src="{{ $product->image ? asset('images/' . $product->image) : asset('images/placeholder.jpg') }}"
+                         alt="{{ $product->title }}"
+                         class="img-fluid rounded shadow-lg product-main-image"
+                         onerror="this.src='{{ asset('images/placeholder.jpg') }}'; this.onerror=null;"
+                         style="max-height: 500px; object-fit: cover; border-radius: 15px;">
+                </div>
             </div>
 
             <!-- Product Details -->
             <div class="col-md-6">
-                <h2 class="fw-bold" style="color:#3b1c47;">{{ $product->title }}</h2>
-                <p class="text-muted mb-2"><strong>Skin Type:</strong> {{ ucfirst($product->type) }}</p>
-                <p><strong>Description:</strong> {{ $product->desc }}</p>
-                <p><strong>Benefits:</strong> {{ $product->benefits }}</p>
-                <p><strong>Usage:</strong> {{ $product->usage }}</p>
+                <div class="product-info">
+                    <h1 class="fw-bold mb-3" style="color:#4B0082;">{{ $product->title }}</h1>
+                    
+                    <div class="product-meta mb-4">
+                        <span class="badge-purple me-2">
+                            <i class="bi bi-tag me-1"></i>{{ $product->category ? $product->category->name : 'N/A' }}
+                        </span>
+                        <span class="text-muted">
+                            <i class="bi bi-star-fill text-warning"></i> 4.8 (120+ reviews)
+                        </span>
+                    </div>
 
-                <h4 class="fw-bold mt-3" style="color:#4B0082;">PKR {{ number_format($product->price) }}</h4>
+                    <div class="product-price mb-4">
+                        <h3 class="fw-bold mb-0" style="color:#4B0082; font-size: 2.5rem;">
+                            PKR {{ number_format($product->price) }}
+                        </h3>
+                        <small class="text-muted">Inclusive of all taxes</small>
+                    </div>
 
-                <!-- Add to Cart -->
-                <form action="{{ route('cart.add', $product->id) }}" method="POST" class="mt-4">
-                    @csrf
-                    <button class="btn px-4 py-2 shadow-sm"
-                            style="background:linear-gradient(135deg,#d6b3ff,#f7b9f4); border:none; color:#3b1c47; font-weight:600; border-radius:8px;">
-                        <i class="bi bi-cart-plus"></i> Add to Cart
-                    </button>
-                </form>
+                    <div class="product-description mb-4">
+                        <h5 class="fw-semibold mb-3" style="color:#4B0082;">
+                            <i class="bi bi-info-circle me-2"></i>Description
+                        </h5>
+                        <p class="text-muted">{{ $product->desc }}</p>
+                    </div>
 
-                <!-- Highlights -->
-                <ul class="mt-4 small text-muted">
-                    <li>✨ 100% Dermatologically Tested</li>
-                    <li>🐰 Cruelty-Free and Vegan</li>
-                    <li>🚚 Free Delivery on Orders Over PKR 2000</li>
-                </ul>
+                    <div class="product-benefits mb-4">
+                        <h5 class="fw-semibold mb-3" style="color:#4B0082;">
+                            <i class="bi bi-check-circle me-2"></i>Key Benefits
+                        </h5>
+                        <p class="text-muted">{{ $product->benefits }}</p>
+                    </div>
+
+                    <div class="product-usage mb-4">
+                        <h5 class="fw-semibold mb-3" style="color:#4B0082;">
+                            <i class="bi bi-book me-2"></i>How to Use
+                        </h5>
+                        <p class="text-muted">{{ $product->usage }}</p>
+                    </div>
+
+                    <!-- Add to Cart -->
+                    <form action="{{ route('cart.add', $product->id) }}" method="POST" class="mb-4">
+                        @csrf
+                        <button class="btn btn-primary btn-lg w-100">
+                            <i class="bi bi-cart-plus me-2"></i>Add to Cart
+                        </button>
+                    </form>
+
+                    <!-- Highlights -->
+                    <div class="product-highlights">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <div class="highlight-item">
+                                    <i class="bi bi-shield-check text-success"></i>
+                                    <span>100% Dermatologically Tested</span>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="highlight-item">
+                                    <i class="bi bi-heart text-danger"></i>
+                                    <span>Cruelty-Free and Vegan</span>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="highlight-item">
+                                    <i class="bi bi-truck text-primary"></i>
+                                    <span>Free Delivery on Orders Over PKR 2000</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <hr class="my-5">
 
         <!-- Reviews Section -->
-        <div class="reviews-section">
-            <h3 class="fw-bold mb-4" style="color:#3b1c47;">Customer Reviews</h3>
+        <div class="reviews-section mt-5">
+            <div class="section-header mb-4">
+                <h3 class="fw-bold mb-2" style="color:#4B0082;">
+                    <i class="bi bi-star-fill me-2" style="color: #f7b9f4;"></i>Customer Reviews
+                </h3>
+                <p class="text-muted">See what our customers are saying</p>
+            </div>
 
             @if(session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
             @endif
 
             @forelse($reviews as $r)
-                <div class="review-card p-3 mb-3 rounded shadow-sm bg-white border-0">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <strong style="color:#4B0082;">{{ $r->name }}</strong>
-                        <span class="text-warning small">★★★★★</span>
+                <div class="review-card p-4 mb-3 rounded shadow-sm bg-white border-0">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <strong style="color:#4B0082; font-size: 1.1rem;">{{ $r->name }}</strong>
+                            @if($r->user)
+                                <small class="text-muted d-block">Verified Purchase</small>
+                            @endif
+                        </div>
+                        <div class="text-end">
+                            <div class="mb-1">
+                                @for($i = 1; $i <= 5; $i++)
+                                    <i class="bi bi-star{{ $i <= $r->rating ? '-fill text-warning' : '' }}"></i>
+                                @endfor
+                            </div>
+                            <small class="text-muted">{{ $r->created_at->format('M d, Y') }}</small>
+                        </div>
                     </div>
-                    <p class="mt-2 mb-0 text-muted">{{ $r->review }}</p>
+                    <p class="mb-0" style="color:#3b1c47; line-height: 1.6;">{{ $r->review }}</p>
                 </div>
             @empty
-                <p class="text-muted">No reviews yet — be the first to share your experience 💜</p>
+                <div class="text-center py-5">
+                    <i class="bi bi-chat-quote" style="font-size: 3rem; color: #f7b9f4;"></i>
+                    <p class="text-muted mt-3">No reviews yet — be the first to share your experience 💜</p>
+                </div>
             @endforelse
 
             <!-- Add Review Form -->
-            <div class="mt-5 p-4 rounded shadow-sm" style="background:#f9f4ff;">
-                <h5 class="fw-bold mb-3" style="color:#3b1c47;">Write a Review</h5>
-                <form method="POST" action="{{ route('product.review', $product->id) }}">
+            <div class="mt-5 p-4 rounded shadow-sm review-form-section">
+                <h5 class="fw-bold mb-3" style="color:#4B0082;">
+                    <i class="bi bi-pencil-square me-2"></i>Write a Review
+                </h5>
+                <form method="POST" action="{{ route('product.review', ['id' => $product->id]) }}">
                     @csrf
                     <div class="mb-3">
                         <input type="text" name="name" class="form-control border-0 shadow-sm" placeholder="Your name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Rating</label>
+                        <select name="rating" class="form-select border-0 shadow-sm" required>
+                            <option value="5">5 Stars - Excellent</option>
+                            <option value="4">4 Stars - Very Good</option>
+                            <option value="3">3 Stars - Good</option>
+                            <option value="2">2 Stars - Fair</option>
+                            <option value="1">1 Star - Poor</option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <textarea name="review" class="form-control border-0 shadow-sm" placeholder="Write your review..." rows="3" required></textarea>

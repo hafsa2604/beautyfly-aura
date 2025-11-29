@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
@@ -12,8 +13,7 @@ class ProductController extends Controller
     // List all products
     public function index()
     {
-        $products = Product::select('products.*')
-            ->distinct()
+        $products = Product::with('category')
             ->orderBy('created_at','desc')
             ->paginate(10);
         return view('admin.products.index', compact('products'));
@@ -22,7 +22,8 @@ class ProductController extends Controller
     // Show create form
     public function create()
     {
-        return view('admin.products.create');
+        $categories = Category::all();
+        return view('admin.products.create', compact('categories'));
     }
 
     // Store new product
@@ -30,7 +31,7 @@ class ProductController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'type' => 'required|string|max:50',
+            'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric',
             'image' => 'nullable|image|mimes:jpg,png,jpeg',
             'desc' => 'nullable|string',
@@ -38,7 +39,7 @@ class ProductController extends Controller
             'usage' => 'nullable|string',
         ]);
 
-        $data = $request->only(['title','type','price','desc','benefits','usage']);
+        $data = $request->only(['title','category_id','price','desc','benefits','usage']);
         $data['slug'] = Str::slug($request->title);
 
         if ($request->hasFile('image')) {
@@ -56,7 +57,8 @@ class ProductController extends Controller
     // Show edit form
     public function edit(Product $product)
     {
-        return view('admin.products.edit', compact('product'));
+        $categories = Category::all();
+        return view('admin.products.edit', compact('product', 'categories'));
     }
 
     // Update product
@@ -64,7 +66,7 @@ class ProductController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'type' => 'required|string|max:50',
+            'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric',
             'image' => 'nullable|image|mimes:jpg,png,jpeg',
             'desc' => 'nullable|string',
@@ -72,7 +74,7 @@ class ProductController extends Controller
             'usage' => 'nullable|string',
         ]);
 
-        $data = $request->only(['title','type','price','desc','benefits','usage']);
+        $data = $request->only(['title','category_id','price','desc','benefits','usage']);
         $data['slug'] = Str::slug($request->title);
 
         if ($request->hasFile('image')) {

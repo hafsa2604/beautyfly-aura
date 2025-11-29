@@ -19,66 +19,108 @@
 </head>
 <body>
 
-{{-- 🌸 Header --}}
-<header class="bg-light shadow-sm">
-    <nav class="navbar navbar-expand-lg navbar-light container">
-        <a class="navbar-brand fw-bold" href="{{ route('home') }}">BeautyFly Aura</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+{{-- 🌸 Professional Header --}}
+<header class="main-header">
+    <div class="top-bar d-none d-md-block">
+        <div class="container">
+            <div class="row align-items-center py-2">
+                <div class="col-md-6">
+                    <div class="d-flex align-items-center gap-3">
+                        <span class="text-white-50 small">
+                            <i class="bi bi-telephone me-1"></i> +92 300 1234567
+                        </span>
+                        <span class="text-white-50 small">
+                            <i class="bi bi-envelope me-1"></i> info@beautyflyaura.com
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-6 text-end">
+                    <div class="social-links">
+                        <a href="#" class="text-white-50 me-2" title="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-white-50 me-2" title="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="text-white-50" title="YouTube"><i class="bi bi-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <nav class="navbar navbar-expand-lg main-navbar">
+        <div class="container">
+            <a class="navbar-brand" href="{{ route('home') }}">
+                <span class="brand-text">BeautyFly <span class="brand-accent">Aura</span></span>
+                <span class="brand-tagline">Premium Skincare</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto align-items-center">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('home') }}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('products') }}">Products</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('skin-type') }}">Know Your Skin</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('contact') }}">Contact</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('cart.view') }}">
-                        <i class="bi bi-cart"></i>
-                        Cart ({{ session('cart') ? count(session('cart')) : 0 }})
-                    </a>
-                </li>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">
+                            <i class="bi bi-house-door me-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('products') ? 'active' : '' }}" href="{{ route('products') }}">
+                            <i class="bi bi-box-seam me-1"></i>Products
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('skin-type') ? 'active' : '' }}" href="{{ route('skin-type') }}">
+                            <i class="bi bi-heart-pulse me-1"></i>Know Your Skin
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}" href="{{ route('contact') }}">
+                            <i class="bi bi-envelope me-1"></i>Contact
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link cart-link" href="{{ route('cart.view') }}">
+                            <i class="bi bi-cart3"></i>
+                            <span class="cart-badge">{{ session('cart') ? count(session('cart')) : 0 }}</span>
+                            <span class="d-none d-md-inline ms-1">Cart</span>
+                        </a>
+                    </li>
 
-                {{-- Auth links: only show if auth routes exist --}}
-                @if (Route::has('login'))
-                    @guest
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">Login</a>
-                        </li>
-                    @else
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                {{ Auth::user()->name }}
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                @if(Auth::user()->is_admin)
+                    {{-- Auth links --}}
+                    @if (Route::has('login'))
+                        @guest
+                            <li class="nav-item">
+                                <a class="nav-link btn-login" href="{{ route('login') }}">
+                                    <i class="bi bi-box-arrow-in-right me-1"></i>Login
+                                </a>
+                            </li>
+                        @else
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle user-menu" href="#" role="button" data-bs-toggle="dropdown">
+                                    <i class="bi bi-person-circle me-1"></i>{{ Auth::user()->name }}
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    @if(Auth::user()->is_admin)
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('admin.products.index') }}">
+                                                <i class="bi bi-shield-check me-2"></i>Admin Panel
+                                            </a>
+                                        </li>
+                                        <li><hr class="dropdown-divider"></li>
+                                    @endif
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('admin.products.index') }}">
-                                            Admin Panel
-                                        </a>
+                                        <form action="{{ route('logout') }}" method="POST">
+                                            @csrf
+                                            <button class="dropdown-item" type="submit">
+                                                <i class="bi bi-box-arrow-right me-2"></i>Logout
+                                            </button>
+                                        </form>
                                     </li>
-                                @endif
-                                <li>
-                                    <form action="{{ route('logout') }}" method="POST">
-                                        @csrf
-                                        <button class="dropdown-item" type="submit">Logout</button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </li>
-                    @endguest
-                @endif
-
-            </ul>
+                                </ul>
+                            </li>
+                        @endguest
+                    @endif
+                </ul>
+            </div>
         </div>
     </nav>
 </header>
@@ -91,8 +133,33 @@
 {{-- 💜 Footer --}}
 @include('pages.footer')
 
+<!-- Scroll to Top Button -->
+<button id="scrollToTop" class="scroll-to-top" title="Back to top">
+    <i class="bi bi-arrow-up"></i>
+</button>
+
 <!-- ✅ Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Scroll to top functionality
+    const scrollToTopBtn = document.getElementById('scrollToTop');
+    
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            scrollToTopBtn.classList.add('show');
+        } else {
+            scrollToTopBtn.classList.remove('show');
+        }
+    });
+    
+    scrollToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+</script>
 
 </body>
 </html>
