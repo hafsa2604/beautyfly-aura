@@ -69,6 +69,39 @@ class ProductController extends Controller
         return view('pages.product-details', compact('product', 'reviews'));
     }
 
+    // Ajax search endpoint - filter by product name or category
+    public function search(Request $request)
+    {
+        $query = $request->input('search', '');
+        
+        if (empty($query)) {
+            return response()->json(['products' => []]);
+        }
+
+        // Filter by product name OR category name (partial match)
+        $products = Product::with('category')
+            ->where(function ($q) use ($query) {
+                $q->where('title', 'LIKE', '%' . $query . '%')
+                  ->orWhereHas('category', function ($cat) use ($query) {
+                      $cat->where('name', 'LIKE', '%' . $query . '%');
+                  });
+            })
+            ->limit(10)
+            ->get()
+            ->map(function ($product) {
+                return [
+                    'id' => $product->id,
+                    'title' => $product->title,
+                    'category' => $product->category ? $product->category->name : 'N/A',
+                    'price' => number_format($product->price),
+                    'image' => $product->image ? asset('images/' . $product->image) : asset('images/placeholder.jpg'),
+                    'url' => route('product.show', $product->id),
+                ];
+            });
+
+        return response()->json(['products' => $products]);
+    }
+
     // Add a review
     public function addReview(Request $request, $id)
     {
