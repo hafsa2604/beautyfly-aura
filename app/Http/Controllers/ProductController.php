@@ -109,9 +109,16 @@ class ProductController extends Controller
             'name'   => 'required|string|max:50',
             'review' => 'required|string|max:500',
             'rating' => 'nullable|integer|min:1|max:5',
+            'image'  => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $product = Product::findOrFail($id);
+
+        $imageName = null;
+        if ($request->hasFile('image')) {
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('images/reviews'), $imageName);
+        }
 
         \App\Models\Review::create([
             'product_id' => $product->id,
@@ -119,6 +126,7 @@ class ProductController extends Controller
             'name' => $request->name,
             'review' => $request->review,
             'rating' => $request->rating ?? 5,
+            'image' => $imageName,
         ]);
 
         return redirect()->route('product.show', $id)

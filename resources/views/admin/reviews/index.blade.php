@@ -44,7 +44,13 @@
                                     <i class="bi bi-star{{ $i <= $review->rating ? '-fill text-warning' : '' }}"></i>
                                 @endfor
                             </td>
-                            <td>{{ Str::limit($review->review, 50) }}</td>
+                            <td>
+                                {{ Str::limit($review->review, 50) }}
+                                @if($review->image)
+                                    <br>
+                                    <small class="text-muted"><i class="bi bi-image"></i> Image attached</small>
+                                @endif
+                            </td>
                             <td>{{ $review->created_at->format('M d, Y') }}</td>
                             <td>
                                 <div class="btn-group">

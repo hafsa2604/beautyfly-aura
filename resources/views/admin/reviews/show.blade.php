@@ -42,7 +42,14 @@
                         </dd>
 
                         <dt class="col-sm-3">Review:</dt>
-                        <dd class="col-sm-9">{{ $review->review }}</dd>
+                        <dd class="col-sm-9">
+                            <p>{{ $review->review }}</p>
+                            @if($review->image)
+                                <div class="mt-2">
+                                    <img src="{{ asset('images/reviews/' . $review->image) }}" alt="Review Image" class="img-fluid rounded shadow-sm" style="max-height: 200px;">
+                                </div>
+                            @endif
+                        </dd>
 
                         <dt class="col-sm-3">Date:</dt>
                         <dd class="col-sm-9">{{ $review->created_at->format('M d, Y H:i') }}</dd>

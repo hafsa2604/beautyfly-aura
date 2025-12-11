@@ -114,6 +114,16 @@
                 <div class="alert alert-success">{{ session('success') }}</div>
             @endif
 
+            @if($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             @forelse($reviews as $r)
                 <div class="review-card p-4 mb-3 rounded shadow-sm bg-white border-0">
                     <div class="d-flex justify-content-between align-items-start mb-3">
@@ -133,6 +143,11 @@
                         </div>
                     </div>
                     <p class="mb-0" style="color:#3b1c47; line-height: 1.6;">{{ $r->review }}</p>
+                    @if($r->image)
+                        <div class="mt-3">
+                            <img src="{{ asset('images/reviews/' . $r->image) }}" alt="Review Image" class="img-fluid rounded shadow-sm" style="max-height: 150px;">
+                        </div>
+                    @endif
                 </div>
             @empty
                 <div class="text-center py-5">
@@ -146,7 +161,7 @@
                 <h5 class="fw-bold mb-3" style="color:#4B0082;">
                     <i class="bi bi-pencil-square me-2"></i>Write a Review
                 </h5>
-                <form method="POST" action="{{ route('product.review', ['id' => $product->id]) }}">
+                <form method="POST" action="{{ route('product.review', ['id' => $product->id]) }}" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <input type="text" name="name" class="form-control border-0 shadow-sm" placeholder="Your name" required>
@@ -164,10 +179,42 @@
                     <div class="mb-3">
                         <textarea name="review" class="form-control border-0 shadow-sm" placeholder="Write your review..." rows="3" required></textarea>
                     </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label text-muted small">Add a photo (optional)</label>
+                        <input type="file" name="image" class="form-control border-0 shadow-sm" id="reviewImageInput" accept="image/*">
+                        <div id="imagePreview" class="mt-2" style="display: none;">
+                            <img src="" alt="Preview" class="img-fluid rounded shadow-sm" style="max-height: 150px;">
+                        </div>
+                    </div>
+
                     <button class="btn px-4 py-2" style="background:linear-gradient(135deg,#d6b3ff,#f7b9f4); border:none; color:#3b1c47; font-weight:600; border-radius:8px;">
                         Submit Review
                     </button>
                 </form>
+
+                <script>
+                    document.getElementById('reviewImageInput').addEventListener('change', function(event) {
+                        const file = event.target.files[0];
+                        if (file) {
+                            // Validate file size (2MB)
+                            if (file.size > 2 * 1024 * 1024) {
+                                alert('File size must be less than 2MB');
+                                this.value = '';
+                                return;
+                            }
+                            
+                            const reader = new FileReader();
+                            reader.onload = function(e) {
+                                const preview = document.getElementById('imagePreview');
+                                const img = preview.querySelector('img');
+                                img.src = e.target.result;
+                                preview.style.display = 'block';
+                            }
+                            reader.readAsDataURL(file);
+                        }
+                    });
+                </script>
             </div>
         </div>
     </div>
