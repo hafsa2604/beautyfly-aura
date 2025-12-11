@@ -56,6 +56,7 @@
                     </dl>
 
                     <div class="mt-4">
+                        <a href="{{ route('admin.reviews.edit', $review) }}" class="btn btn-primary me-2">Edit Review</a>
                         <form action="{{ route('admin.reviews.destroy', $review) }}" method="POST" style="display:inline"
                               onsubmit="return confirm('Are you sure you want to delete this review?');">
                             @csrf @method('DELETE')

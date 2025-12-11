@@ -57,6 +57,9 @@
                                     <a href="{{ route('admin.reviews.show', $review) }}" class="btn btn-sm btn-outline-info">
                                         <i class="bi bi-eye"></i> View
                                     </a>
+                                    <a href="{{ route('admin.reviews.edit', $review) }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-pencil"></i> Edit
+                                    </a>
                                     <form action="{{ route('admin.reviews.destroy', $review) }}" method="POST" style="display:inline"
                                           onsubmit="return confirm('Are you sure you want to delete this review?');">
                                         @csrf @method('DELETE')

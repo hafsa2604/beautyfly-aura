@@ -7,20 +7,6 @@
                         <span class="brand-text-footer">BeautyFly <span class="brand-accent-footer">Aura</span></span>
                     </h4>
                     <p class="footer-tagline">Your glow, our passion 💫 — skincare crafted with love and science.</p>
-                    <div class="social-links-footer mt-4">
-                        <a href="#" class="social-icon" title="Facebook">
-                            <i class="bi bi-facebook"></i>
-                        </a>
-                        <a href="#" class="social-icon" title="Instagram">
-                            <i class="bi bi-instagram"></i>
-                        </a>
-                        <a href="#" class="social-icon" title="YouTube">
-                            <i class="bi bi-youtube"></i>
-                        </a>
-                        <a href="#" class="social-icon" title="Twitter">
-                            <i class="bi bi-twitter"></i>
-                        </a>
-                    </div>
                 </div>
             </div>
 
@@ -83,30 +69,13 @@
                         <div class="text-danger small mt-1">{{ $message }}</div>
                     @enderror
                 </form>
-                <div class="payment-methods mt-4">
-                    <h6 class="footer-heading mb-2">We Accept</h6>
-                    <div class="d-flex gap-2 flex-wrap">
-                        <div class="payment-icon">
-                            <i class="bi bi-credit-card"></i>
-                        </div>
-                        <div class="payment-icon">
-                            <i class="bi bi-paypal"></i>
-                        </div>
-                    </div>
-                    <p class="small mt-2"><i class="bi bi-shield-check me-1"></i>Secure transactions</p>
-                </div>
             </div>
         </div>
 
         <div class="footer-bottom">
             <div class="row align-items-center">
-                <div class="col-md-6">
+                <div class="col-md-12 text-center">
                     <p class="mb-0">© {{ date('Y') }} <strong>BeautyFly Aura</strong> — All Rights Reserved 💜</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <a href="#" class="footer-link me-3">Privacy Policy</a>
-                    <a href="#" class="footer-link me-3">Terms of Service</a>
-                    <a href="#" class="footer-link">Refund Policy</a>
                 </div>
             </div>
         </div>

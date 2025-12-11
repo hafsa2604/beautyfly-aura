@@ -21,29 +21,7 @@
 
 {{-- 🌸 Professional Header --}}
 <header class="main-header">
-    <div class="top-bar d-none d-md-block">
-        <div class="container">
-            <div class="row align-items-center py-2">
-                <div class="col-md-6">
-                    <div class="d-flex align-items-center gap-3">
-                        <span class="text-white-50 small">
-                            <i class="bi bi-telephone me-1"></i> +92 300 1234567
-                        </span>
-                        <span class="text-white-50 small">
-                            <i class="bi bi-envelope me-1"></i> info@beautyflyaura.com
-                        </span>
-                    </div>
-                </div>
-                <div class="col-md-6 text-end">
-                    <div class="social-links">
-                        <a href="#" class="text-white-50 me-2" title="Facebook"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="text-white-50 me-2" title="Instagram"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="text-white-50" title="YouTube"><i class="bi bi-youtube"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
     
     <nav class="navbar navbar-expand-lg main-navbar">
         <div class="container">

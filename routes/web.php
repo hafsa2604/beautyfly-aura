@@ -59,7 +59,7 @@ require __DIR__.'/auth.php';
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('products', AdminProductController::class);
     Route::resource('categories', CategoryController::class);
-    Route::resource('reviews', ReviewController::class)->only(['index', 'show', 'destroy']);
+    Route::resource('reviews', ReviewController::class);
     Route::resource('orders', OrderController::class)->only(['index', 'show', 'update', 'destroy']);
     Route::resource('users', UserController::class)->only(['index', 'show', 'edit', 'update', 'destroy']);
     Route::resource('contacts', ContactController::class)->only(['index', 'show', 'update', 'destroy']);
