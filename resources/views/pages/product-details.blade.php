@@ -161,7 +161,7 @@
                 <h5 class="fw-bold mb-3" style="color:#4B0082;">
                     <i class="bi bi-pencil-square me-2"></i>Write a Review
                 </h5>
-                <form method="POST" action="{{ route('product.review', ['id' => $product->id]) }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('product.review', $product->id) }}" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <input type="text" name="name" class="form-control border-0 shadow-sm" placeholder="Your name" required>

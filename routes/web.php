@@ -19,8 +19,8 @@ use App\Http\Controllers\ProfileController;
 Route::get('/', [PageController::class, 'home'])->name('home');
 
 Route::get('/products', [ProductController::class, 'index'])->name('products');
-Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
-Route::post('/product/{id}/review', [ProductController::class, 'addReview'])->name('product.review');
+Route::get('/product/{product}', [ProductController::class, 'show'])->name('product.show');
+Route::post('/product/{product}/review', [ProductController::class, 'addReview'])->name('product.review');
 Route::get('/search-products', [ProductController::class, 'search'])->name('products.search');
 
 Route::get('/cart', [CartController::class, 'view'])->name('cart.view');
