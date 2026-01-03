@@ -52,6 +52,98 @@
                                 <small class="text-muted">Please include your complete address including city and postal code</small>
                             </div>
 
+                            <!-- Payment Method Selection -->
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold">Payment Method <span class="text-danger">*</span></label>
+                                <div class="payment-methods">
+                                    <!-- Cash on Delivery -->
+                                    <div class="form-check payment-option mb-3">
+                                        <input class="form-check-input" type="radio" name="payment_method" id="cod" value="cash_on_delivery" checked required>
+                                        <label class="form-check-label w-100" for="cod">
+                                            <div class="d-flex align-items-center justify-content-between p-3 border rounded" style="cursor: pointer;">
+                                                <div class="d-flex align-items-center">
+                                                    <i class="bi bi-cash-coin me-3" style="font-size: 1.5rem; color: #4B0082;"></i>
+                                                    <div>
+                                                        <strong>Cash on Delivery</strong>
+                                                        <small class="d-block text-muted">Pay when you receive your order</small>
+                                                    </div>
+                                                </div>
+                                                <i class="bi bi-check-circle-fill text-success" style="font-size: 1.2rem;"></i>
+                                            </div>
+                                        </label>
+                                    </div>
+
+                                    <!-- Mastercard -->
+                                    <div class="form-check payment-option mb-3">
+                                        <input class="form-check-input" type="radio" name="payment_method" id="mastercard" value="mastercard" required>
+                                        <label class="form-check-label w-100" for="mastercard">
+                                            <div class="d-flex align-items-center justify-content-between p-3 border rounded" style="cursor: pointer;">
+                                                <div class="d-flex align-items-center">
+                                                    <i class="bi bi-credit-card me-3" style="font-size: 1.5rem; color: #4B0082;"></i>
+                                                    <div>
+                                                        <strong>Mastercard</strong>
+                                                        <small class="d-block text-muted">Pay securely with your Mastercard</small>
+                                                    </div>
+                                                </div>
+                                                <i class="bi bi-circle" style="font-size: 1.2rem; color: #ddd;"></i>
+                                            </div>
+                                        </label>
+                                    </div>
+
+                                    <!-- PayPal -->
+                                    <div class="form-check payment-option mb-3">
+                                        <input class="form-check-input" type="radio" name="payment_method" id="paypal" value="paypal" required>
+                                        <label class="form-check-label w-100" for="paypal">
+                                            <div class="d-flex align-items-center justify-content-between p-3 border rounded" style="cursor: pointer;">
+                                                <div class="d-flex align-items-center">
+                                                    <i class="bi bi-paypal me-3" style="font-size: 1.5rem; color: #4B0082;"></i>
+                                                    <div>
+                                                        <strong>PayPal</strong>
+                                                        <small class="d-block text-muted">Pay with your PayPal account</small>
+                                                    </div>
+                                                </div>
+                                                <i class="bi bi-circle" style="font-size: 1.2rem; color: #ddd;"></i>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Mastercard Details (Hidden by default) -->
+                                <div id="mastercard-details" class="mt-4 p-4 border rounded shadow-sm bg-light d-none">
+                                    <h6 class="fw-bold mb-3 border-bottom pb-2" style="color: #4B0082;">
+                                        <i class="bi bi-credit-card-2-front me-2"></i>Mastercard Details
+                                    </h6>
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-semibold">Cardholder Name</label>
+                                        <input type="text" name="card_name" class="form-control" placeholder="Name on card">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label small fw-semibold">Card Number</label>
+                                        <div class="input-group">
+                                            <input type="text" name="card_number" class="form-control" placeholder="0000 0000 0000 0000">
+                                            <span class="input-group-text bg-white"><i class="bi bi-credit-card"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label class="form-label small fw-semibold">Expiry Date</label>
+                                            <input type="text" name="card_expiry" class="form-control" placeholder="MM/YY">
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label small fw-semibold">CVV</label>
+                                            <input type="password" name="card_cvv" class="form-control" placeholder="123">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- PayPal Redirect Message (Hidden by default) -->
+                                <div id="paypal-details" class="mt-4 p-4 border rounded shadow-sm bg-light d-none text-center">
+                                    <i class="bi bi-paypal mb-2" style="font-size: 2.5rem; color: #003087;"></i>
+                                    <h6 class="fw-bold" style="color: #4B0082;">PayPal Checkout</h6>
+                                    <p class="text-muted small">You will be redirected to the PayPal secure site to complete your payment after clicking "Place Order".</p>
+                                </div>
+                            </div>
+
                             <div class="mb-4">
                                 <label class="form-label fw-semibold">Additional Notes (Optional)</label>
                                 <textarea name="notes" class="form-control" rows="2" placeholder="Any special instructions...">{{ old('notes') }}</textarea>
@@ -141,4 +233,69 @@
             </div>
         </div>
     </div>
+
+    <style>
+        .payment-option input[type="radio"] {
+            display: none;
+        }
+        
+        .payment-option input[type="radio"]:checked + label .border {
+            border-color: #4B0082 !important;
+            border-width: 2px !important;
+            background-color: rgba(75, 0, 130, 0.05);
+        }
+        
+        .payment-option input[type="radio"]:checked + label .bi-circle {
+            display: none;
+        }
+        
+        .payment-option input[type="radio"]:not(:checked) + label .bi-check-circle-fill {
+            display: none;
+        }
+        
+        .payment-option label:hover .border {
+            border-color: #9c27b0 !important;
+            background-color: rgba(156, 39, 176, 0.02);
+        }
+    </style>
+
+    <script>
+        // Update visual feedback and detail forms when payment method changes
+        document.querySelectorAll('input[name="payment_method"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                // Handle Radio Icons
+                document.querySelectorAll('.payment-option label .bi-check-circle-fill').forEach(icon => {
+                    icon.style.display = 'none';
+                });
+                document.querySelectorAll('.payment-option label .bi-circle').forEach(icon => {
+                    icon.style.display = 'inline-block';
+                });
+                
+                const selectedLabel = this.nextElementSibling;
+                const checkIcon = selectedLabel.querySelector('.bi-check-circle-fill');
+                const circleIcon = selectedLabel.querySelector('.bi-circle');
+                
+                if (checkIcon) checkIcon.style.display = 'inline-block';
+                if (circleIcon) circleIcon.style.display = 'none';
+
+                // Handle Detail Sections
+                const mastercardDetails = document.getElementById('mastercard-details');
+                const paypalDetails = document.getElementById('paypal-details');
+                const cardInputs = mastercardDetails.querySelectorAll('input');
+
+                // Reset all
+                mastercardDetails.classList.add('d-none');
+                paypalDetails.classList.add('d-none');
+                cardInputs.forEach(input => input.required = false);
+
+                // Show selected
+                if (this.value === 'mastercard') {
+                    mastercardDetails.classList.remove('d-none');
+                    cardInputs.forEach(input => input.required = true);
+                } else if (this.value === 'paypal') {
+                    paypalDetails.classList.remove('d-none');
+                }
+            });
+        });
+    </script>
 @endsection

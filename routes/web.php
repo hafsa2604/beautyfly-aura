@@ -23,20 +23,25 @@ Route::get('/product/{product}', [ProductController::class, 'show'])->name('prod
 Route::post('/product/{product}/review', [ProductController::class, 'addReview'])->name('product.review');
 Route::get('/search-products', [ProductController::class, 'search'])->name('products.search');
 
-Route::get('/cart', [CartController::class, 'view'])->name('cart.view');
-Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
-Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
-Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
-
 Route::view('/skin-type', 'pages.skin-type')->name('skin-type');
 
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::post('/contact', [PageController::class, 'sendContact'])->name('contact.send');
 Route::post('/newsletter/subscribe', [PageController::class, 'subscribeNewsletter'])->name('newsletter.subscribe');
 
-Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
-Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
-Route::get('/checkout/thankyou/{order}', [CheckoutController::class, 'thankyou'])->name('checkout.thankyou');
+// ----------------------
+// Protected Cart & Order Routes
+// ----------------------
+Route::middleware(['auth'])->group(function () {
+    Route::get('/cart', [CartController::class, 'view'])->name('cart.view');
+    Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
+    Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+    Route::get('/checkout/thankyou/{order}', [CheckoutController::class, 'thankyou'])->name('checkout.thankyou');
+});
 
 // ----------------------
 // Auth / Profile Routes (Breeze)

@@ -67,6 +67,11 @@
                     @if (Route::has('login'))
                         @guest
                             <li class="nav-item">
+                                <a class="nav-link btn-register" href="{{ route('register') }}">
+                                    <i class="bi bi-person-plus me-1"></i>Register
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link btn-login" href="{{ route('login') }}">
                                     <i class="bi bi-box-arrow-in-right me-1"></i>Login
                                 </a>
@@ -85,6 +90,12 @@
                                         </li>
                                         <li><hr class="dropdown-divider"></li>
                                     @endif
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('dashboard') }}">
+                                            <i class="bi bi-clock-history me-2"></i>My Orders
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
                                     <li>
                                         <form action="{{ route('logout') }}" method="POST">
                                             @csrf
